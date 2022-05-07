@@ -1,0 +1,17 @@
+Bootstrap: docker
+From: centos:centos6
+
+%post
+    yum clean all
+    yum -y update
+    yum -y install bc libgomp perl tar tcsh bc xorg-x11-server-Xvfb
+    yum -y install epel-release
+    yum -y install netcdf
+    yum clean all
+
+%files
+    src/CentOS-Base.repo /etc/yum.repos.d
+    
+%labels
+    Author jstorrs@gmail.com
+    Version 2022-05-06

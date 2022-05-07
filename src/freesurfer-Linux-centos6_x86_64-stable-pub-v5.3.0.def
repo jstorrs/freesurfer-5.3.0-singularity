@@ -1,0 +1,32 @@
+Bootstrap: localimage
+From: centos6.sif
+
+%post
+    echo "Extracting freesurfer..."
+    tar -C /opt "--exclude=freesurfer/subjects/*" -xvzf /root/freesurfer.tgz
+    rm /root/freesurfer.tgz
+    chmod 755 /root/patches/*
+    mv /root/patches/* /opt/freesurfer/bin
+    rmdir /root/patches
+    mkdir /subjects
+    mv /root/license.txt /opt/freesurfer
+    
+%environment
+    export NO_FSFAST=1
+    export FREESURFER_HOME=/opt/freesurfer
+    export SUBJECTS_DIR=/subjects
+    source $FREESURFER_HOME/SetUpFreeSurfer.sh
+
+%files
+    freesurfer/5.3.0/freesurfer-Linux-centos6_x86_64-stable-pub-v5.3.0.tar.gz /root/freesurfer.tgz
+    freesurfer/5.3.0-patch/recon-all /root/patches/recon-all
+    freesurfer/5.3.0-patch/mni152reg /root/patches/mni152reg
+    freesurfer/5.3.0-patch/mri_mcsim.linux /root/patches/mri_mcsim
+    freesurfer/5.3.0-patch/tksurferfv /root/patches/tksurferfv
+    freesurfer/5.3.0-patch/mri_segstats.centos6_x86_64 /root/patches/mri_segstats
+    license.txt /root/license.txt
+    
+%labels
+    Maintainer jstorrs@gmail.com
+    Source freesurfer-Linux-centos6_x86_64-stable-pub-v5.3.0.tar.gz
+    Version 2022-05-07
